@@ -1,0 +1,9 @@
+{
+  "name": "history-of-art-timeline",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A Journey Through the History of Art - static website",
+  "scripts": {
+    "build": "node -e \"const fs=require('fs');fs.mkdirSync('dist',{recursive:true});fs.copyFileSync('index.html','dist/index.html');\""
+  }
+}

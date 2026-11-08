@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Journey Through the History of Art | HUM 101 Timeline</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Cinzel', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        gold: {
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 3px;
+            background: linear-gradient(to bottom, #ca8a04, #3b82f6, #ec4899, #ca8a04);
+            transform: translateX(-50%);
+            z-index: 0;
+        }
+        @media (max-width: 768px) {
+            .timeline-line::before {
+                left: 1.75rem;
+            }
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(202, 138, 4, 0.4);
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(202, 138, 4, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen selection:bg-gold-500 selection:text-black">
+
+    <!-- Header / Hero Section -->
+    <header class="relative bg-slate-900 border-b border-slate-800 py-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#ca8a04_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <span class="inline-block px-3 py-1 bg-gold-500/10 text-gold-400 border border-gold-500/30 rounded-full text-xs font-semibold uppercase tracking-widest mb-4">
+                HUM 101 • Individual Activity
+            </span>
+            <h1 class="font-serif text-4xl sm:text-6xl font-extrabold tracking-tight text-white mb-4">
+                A Journey Through the <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold-400 via-amber-200 to-yellow-500">History of Art</span>
+            </h1>
+            <p class="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto mb-8 font-light leading-relaxed">
+                Explore 17 transformative art movements in chronological sequence, discovering how creative vision, techniques, and philosophy evolved from the Renaissance to Op Art.
+            </p>
+            
+            <!-- Quick Filter & Navigation Controls -->
+            <div class="flex flex-wrap items-center justify-center gap-3 max-w-3xl mx-auto">
+                <div class="relative flex-grow max-w-md">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="searchInput" placeholder="Search movements, artists, techniques..." 
+                           class="w-full pl-10 pr-4 py-2.5 bg-slate-800/80 border border-slate-700 rounded-xl text-sm text-slate-200 placeholder-slate-400 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition-all">
+                </div>
+                <button id="viewToggleBtn" onclick="toggleViewMode()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-sm font-medium text-slate-200 flex items-center gap-2 transition-all">
+                    <i class="fa-solid fa-table-cells"></i> <span id="viewModeText">Grid View</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Quick Navigation Bar -->
+    <div class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 py-3 px-4 shadow-lg">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4 overflow-x-auto no-scrollbar py-1">
+            <span class="text-xs font-semibold text-gold-400 uppercase tracking-wider whitespace-nowrap flex items-center gap-1.5">
+                <i class="fa-solid fa-clock-rotate-left"></i> Era Index:
+            </span>
+            <div id="quickNavLinks" class="flex items-center gap-2 overflow-x-auto custom-scrollbar pb-1 text-xs whitespace-nowrap">
+                <!-- Dynamic Quick Nav Buttons Populated via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <!-- Timeline Container View -->
+        <div id="timelineView" class="relative timeline-line space-y-12 sm:space-y-16">
+            <!-- Dynamic Content Cards Populated via JS -->
+        </div>
+
+        <!-- Grid Container View (Hidden by default) -->
+        <div id="gridView" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Dynamic Grid Cards Populated via JS -->
+        </div>
+
+        <!-- No Results Message -->
+        <div id="noResults" class="hidden text-center py-20">
+            <i class="fa-regular fa-compass text-5xl text-slate-600 mb-4"></i>
+            <h3 class="text-xl font-serif text-slate-300">No art movements found</h3>
+            <p class="text-slate-500 text-sm mt-1">Try adjusting your search terms.</p>
+        </div>
+    </main>
+
+    <!-- Detail Modal -->
+    <div id="artModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-sm opacity-0 transition-opacity duration-300">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl transform scale-95 transition-transform duration-300 relative">
+            
+            <button onclick="closeModal()" class="absolute top-4 right-4 z-10 w-10 h-10 bg-slate-800/80 hover:bg-slate-700 border border-slate-600 rounded-full flex items-center justify-center text-slate-300 hover:text-white transition-all">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div id="modalContent" class="p-6 sm:p-8">
+                <!-- Modal dynamic insertion -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-slate-950 py-10 px-4 text-center text-slate-500 text-sm">
+        <div class="max-w-4xl mx-auto space-y-3">
+            <p class="font-serif text-slate-400 text-base">HUM 101: Art Appreciation & History</p>
+            <p>Interactive Art History Timeline • Crafted with Educational Precision</p>
+            <p class="text-xs text-slate-600">All 17 Required Movements Included Chronologically (ca. 1400 – 1970s)</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Data & Interactivity -->
+    <script>
+        // 17 Required Art Movements in Chronological Order
+        const artMovements = [
+            {
+                id: "renaissance",
+                name: "Renaissance Art",
+                period: "c. 1400 – 1600",
+                century: "15th–16th Century",
+                tagline: "The rebirth of classical antiquity, humanism, and realistic representation.",
+                description: "Originating in Florence, Italy, the Renaissance ('rebirth') marked a dramatic departure from medieval gothic art. Driven by Humanism, artists revived ancient Greek and Roman philosophy, emphasizing realistic proportions, anatomical precision, and deep spatial illusion through mathematics and natural observation.",
+                characteristics: [
+                    "Linear perspective & depth creation",
+                    "Chiaroscuro (dramatic light & shadow contrast)",
+                    "Sfumato (soft blending of tones)",
+                    "Anatomical accuracy & classic symmetry",
+                    "Harmonious composition and balance"
+                ],
+                artist: "Leonardo da Vinci",
+                artwork: "Mona Lisa (c. 1503–1519)",
+                artworkDescription: "Famous for its enigmatic expression, masterly use of sfumato, and subtle atmospheric landscape.",
+                interestingFact: "Artists during the Renaissance were among the first to dissect human cadavers to understand muscle structures and bone anatomy for accurate painting.",
+                color: "from-amber-700/30 to-amber-900/30",
+                badgeColor: "bg-amber-500/20 text-amber-300 border-amber-500/30",
+                icon: "fa-palette"
+            },
+            {
+                id: "baroque",
+                name: "Baroque Art",
+                period: "c. 1600 – 1750",
+                century: "17th–18th Century",
+                tagline: "Dramatic tension, intense emotion, grandiose grandeur, and theatrical lighting.",
+                description: "Encouraged by the Catholic Counter-Reformation to evoke awe and deep religious reverence, Baroque art replaced Renaissance stillness with high drama, dynamic motion, emotional intensity, and sharp contrasts between dark background and illuminated figures.",
+                characteristics: [
+                    "Tenebrism (extreme contrast of light and dark)",
+                    "Dynamic diagonal compositions",
+                    "Emotional intensity and theatricality",
+                    "Rich, deep color palettes",
+                    "Sense of motion and climax"
+                ],
+                artist: "Caravaggio",
+                artwork: "The Calling of Saint Matthew (1599–1600)",
+                artworkDescription: "Features a dramatic shaft of light penetrating a dark room, symbolizing divine grace calling Matthew.",
+                interestingFact: "Baroque lighting was directly inspired by theatrical stage effects, using single light sources to create suspense and focus.",
+                color: "from-yellow-900/30 to-red-950/30",
+                badgeColor: "bg-yellow-500/20 text-yellow-300 border-yellow-500/30",
+                icon: "fa-masks-theater"
+            },
+            {
+                id: "rococo",
+                name: "Rococo Art",
+                period: "c. 1730 – 1780",
+                century: "18th Century",
+                tagline: "Playful elegance, soft pastel colors, ornate ornamentation, and aristocratic leisure.",
+                description: "Emerging in France as a reaction against the heavy solemnity of Baroque, Rococo favored lighthearted, whimsical themes, playful romance, delicate detail, flowing curves, and pastel color palettes tailored for opulent salon interiors.",
+                characteristics: [
+                    "Pastel color schemes (pinks, blues, creams)",
+                    "Asymmetrical curves and scroll motifs",
+                    "Themes of romance, playfulness, and luxury",
+                    "Lighthearted and whimsical subjects",
+                    "Intricate decorative detail"
+                ],
+                artist: "Jean-Honoré Fragonard",
+                artwork: "The Swing (1767)",
+                artworkDescription: "Depicts a young woman playfully kicking off her shoe on a swing while her lover hides in the bushes below.",
+                interestingFact: "The word 'Rococo' stems from 'rocaille', referring to decorative shell and pebble work used in artificial grottoes.",
+                color: "from-pink-900/30 to-rose-950/30",
+                badgeColor: "bg-pink-500/20 text-pink-300 border-pink-500/30",
+                icon: "fa-feather"
+            },
+            {
+                id: "classicism",
+                name: "Classicism (Neoclassicism)",
+                period: "c. 1760 – 1830",
+                century: "18th–19th Century",
+                tagline: "Return to order, moral virtue, restraint, and classical Greco-Roman purity.",
+                description: "Inspiring revolutionary ideals during the Age of Enlightenment, Classicism rejected Rococo frivolity in favor of noble simplicity, moral heroism, smooth brushwork, and clear geometric structure drawn from Roman and Greek history.",
+                characteristics: [
+                    "Clear, crisp outlines and smooth surfaces",
+                    "Symmetrical, balanced compositions",
+                    "Heroic, civic, and patriotic themes",
+                    "Restrained emotion and self-sacrifice",
+                    "Inspiration from classical antiquity"
+                ],
+                artist: "Jacques-Louis David",
+                artwork: "Oath of the Horatii (1784)",
+                artworkDescription: "A landmark painting displaying three brothers swearing to defend Rome, showcasing stoic courage and duty.",
+                interestingFact: "Neoclassicism became the official aesthetic style of the French Revolution and Napoleon's French Empire.",
+                color: "from-blue-950/30 to-slate-900/30",
+                badgeColor: "bg-blue-500/20 text-blue-300 border-blue-500/30",
+                icon: "fa-landmark"
+            },
+            {
+                id: "romanticism",
+                name: "Romanticism",
+                period: "c. 1798 – 1850",
+                century: "19th Century",
+                tagline: "Individual feeling, raw emotion, the sublime power of nature, and imagination.",
+                description: "A rebellion against Enlightenment rationalism and industrial urbanization, Romanticism elevated human emotion, wild untamed natural landscapes, heroic passion, mystery, and the 'sublime'—the awe-inspiring mixture of terror and wonder.",
+                characteristics: [
+                    "Emphasis on intense personal emotion",
+                    "Awe-inspiring and dangerous natural scenery",
+                    "Expressive brushwork and vivid color",
+                    "Themes of mystery, liberty, and human passion",
+                    "Rebellion against strict classical rules"
+                ],
+                artist: "Eugène Delacroix",
+                artwork: "Liberty Leading the People (1830)",
+                artworkDescription: "An allegorical depiction of Liberty personified leading citizens forward over barricades during the July Revolution.",
+                interestingFact: "Romantic artists frequently traveled to stormy mountains and wild oceans to experience 'the sublime' firsthand.",
+                color: "from-red-950/30 to-orange-950/30",
+                badgeColor: "bg-red-500/20 text-red-300 border-red-500/30",
+                icon: "fa-fire"
+            },
+            {
+                id: "realism",
+                name: "Realism",
+                period: "c. 1840 – 1880",
+                century: "19th Century",
+                tagline: "Truthful, unidealized depiction of everyday life and working-class reality.",
+                description: "Emerging in France following the 1848 Revolution, Realism discarded mythological, heroic, and romanticized topics to paint real, unvarnished modern life—including hard manual labor, working-class struggles, and ordinary social conditions.",
+                characteristics: [
+                    "Depiction of real everyday people and labor",
+                    "Rejection of idealization or romantic fantasy",
+                    "Earthy color tones and direct lighting",
+                    "Social critique and honest observation",
+                    "Detailed focus on contemporary settings"
+                ],
+                artist: "Gustave Courbet",
+                artwork: "The Stone Breakers (1849)",
+                artworkDescription: "Depicts two low-income workers breaking rocks on a roadside, highlighting backbreaking labor without glamor.",
+                interestingFact: "Courbet famously declared: 'I cannot paint an angel, because I have never seen one.'",
+                color: "from-stone-900/40 to-neutral-900/40",
+                badgeColor: "bg-stone-500/20 text-stone-300 border-stone-500/30",
+                icon: "fa-person-digging"
+            },
+            {
+                id: "impressionism",
+                name: "Impressionism",
+                period: "c. 1865 – 1885",
+                century: "Late 19th Century",
+                tagline: "Capturing fleeting light, atmospheric color, and quick impressions of modern life.",
+                description: "Rejecting indoor academic painting, Impressionists painted outdoors ('en plein air') using rapid, visible brushstrokes and pure unmixed colors to capture the changing qualities of natural light and fleeting moments of everyday life.",
+                characteristics: [
+                    "Short, thick, visible brushstrokes",
+                    "Focus on natural light and atmospheric shifts",
+                    "Vibrant, unmixed pure pigments",
+                    "Plein air (outdoor) painting execution",
+                    "Candid, snapshot-like compositions"
+                ],
+                artist: "Claude Monet",
+                artwork: "Impression, Sunrise (1872)",
+                artworkDescription: "The hazy depiction of Le Havre harbor that gave the entire movement its enduring name.",
+                interestingFact: "The term 'Impressionism' was originally coined by a hostile art critic as an insult, mocking the artwork as looking 'unfinished.'",
+                color: "from-teal-950/30 to-sky-950/30",
+                badgeColor: "bg-teal-500/20 text-teal-300 border-teal-500/30",
+                icon: "fa-sun"
+            },
+            {
+                id: "fauvism",
+                name: "Fauvism",
+                period: "c. 1905 – 1910",
+                century: "Early 20th Century",
+                tagline: "Wild, unnatural colors and expressive, painterly freedom.",
+                description: "Fauvism burst forth as an avant-garde explosion where color was freed from realistic representation. Artists used wild, unnatural, saturated pigments directly from the tube to express inner emotion and energy rather than visual realism.",
+                characteristics: [
+                    "Unnatural, vibrant, non-representational color",
+                    "Bold, spontaneous brushwork",
+                    "Simplified forms and flat shapes",
+                    "High emotional energy and optimism",
+                    "Freedom from realistic color rules"
+                ],
+                artist: "Henri Matisse",
+                artwork: "Woman with a Hat (1905)",
+                artworkDescription: "A portrait featuring shocking patches of green, yellow, and blue painted directly across the subject's face.",
+                interestingFact: "A critic labeled them 'Les Fauves' meaning 'The Wild Beasts' after seeing their bright canvases surrounding a classical sculpture.",
+                color: "from-fuchsia-950/30 to-orange-950/30",
+                badgeColor: "bg-fuchsia-500/20 text-fuchsia-300 border-fuchsia-500/30",
+                icon: "fa-burst"
+            },
+            {
+                id: "cubism",
+                name: "Cubism",
+                period: "c. 1907 – 1914",
+                century: "Early 20th Century",
+                tagline: "Deconstructing subjects into geometric facets and multiple viewpoints simultaneously.",
+                description: "Pioneered by Picasso and Braque, Cubism shattered traditional single-point perspective. Instead of depicting subjects from one angle, Cubists fragmented objects into geometric shapes, reconstructing them to show multiple viewpoints at once.",
+                characteristics: [
+                    "Deconstruction of forms into geometric facets",
+                    "Simultaneous multiple perspectives",
+                    "Flatness of picture plane emphasized",
+                    "Subdued neutral color palettes (early phase)",
+                    "Collage elements incorporated (later phase)"
+                ],
+                artist: "Pablo Picasso",
+                artwork: "Les Demoiselles d'Avignon (1907)",
+                artworkDescription: "A revolutionary work breaking five female figures into jagged geometric planes influenced by African masks.",
+                interestingFact: "Cubism paved the way for almost all 20th-century abstract art movements by breaking away from traditional depth.",
+                color: "from-emerald-950/30 to-amber-950/30",
+                badgeColor: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
+                icon: "fa-cube"
+            },
+            {
+                id: "futurism",
+                name: "Futurism",
+                period: "c. 1909 – 1918",
+                century: "Early 20th Century",
+                tagline: "Glorifying speed, modern technology, dynamic movement, and the industrial machine age.",
+                description: "Founded in Italy, Futurism celebrated the velocity, noise, machinery, and urban dynamism of the 20th century. Futurist painters sought to depict the sensation of movement through repeating lines and fragmented dynamic forms.",
+                characteristics: [
+                    "Depiction of speed, force, and motion",
+                    "Repetition of limbs/lines to indicate velocity",
+                    "Urban and industrial machine subject matter",
+                    "Sharp angles and dynamic diagonals",
+                    "Celebration of modern technological progress"
+                ],
+                artist: "Umberto Boccioni",
+                artwork: "Unique Forms of Continuity in Space (1913)",
+                artworkDescription: "A futuristic bronze sculpture capturing a figure marching dynamically with aerodynamic, flowing forms.",
+                interestingFact: "Futurists published aggressive manifestos in newspapers praising racing cars as more beautiful than classical statues.",
+                color: "from-cyan-950/30 to-blue-950/30",
+                badgeColor: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30",
+                icon: "fa-bolt"
+            },
+            {
+                id: "expressionism",
+                name: "Expressionism",
+                period: "c. 1905 – 1920",
+                century: "Early 20th Century",
+                tagline: "Distorting physical reality to convey raw psychological angst and subjective emotion.",
+                description: "Emerging predominantly in Germany, Expressionism prioritized psychological truth over external appearance. Artists exaggerated lines, distorted shapes, and used jarring colors to express anxiety, alienation, and intense inner feeling.",
+                characteristics: [
+                    "Distorted shapes and exaggerated figures",
+                    "Intense, moody, or jarring color palettes",
+                    "Themes of psychological anxiety and isolation",
+                    "Rough, raw brushstrokes",
+                    "Subjective emotion prioritized over literal reality"
+                ],
+                artist: "Edvard Munch",
+                artwork: "The Scream (1893 / early pioneer)",
+                artworkDescription: "An iconic image depicting an agonized figure against a fiery red sky, embodying modern existential dread.",
+                interestingFact: "The screaming figure in Munch's famous painting isn't actually making a sound—it is absorbing the infinite scream of nature.",
+                color: "from-purple-950/30 to-indigo-950/30",
+                badgeColor: "bg-purple-500/20 text-purple-300 border-purple-500/30",
+                icon: "fa-face-grimace"
+            },
+            {
+                id: "dada",
+                name: "Dada",
+                period: "c. 1916 – 1924",
+                century: "Early 20th Century",
+                tagline: "Anti-art, absurdity, chaos, and satire questioning traditional artistic values.",
+                description: "Born out of horror and disillusionment during World War I in Zurich, Dada was an anti-establishment movement that mocked artistic traditions. Dadaists used absurdity, chance, photomontage, and ready-made everyday objects to challenge what art could be.",
+                characteristics: [
+                    "Use of 'Readymades' (pre-existing manufactured objects)",
+                    "Photomontage and collage techniques",
+                    "Absurdity, humor, and nonsense",
+                    "Rebellion against traditional logic and beauty",
+                    "Emphasis on concept over technical skill"
+                ],
+                artist: "Marcel Duchamp",
+                artwork: "Fountain (1917)",
+                artworkDescription: "A standard porcelain urinal turned upside down and signed with the pseudonym 'R. Mutt'.",
+                interestingFact: "The name 'Dada' was chosen at random by inserting a paper knife into a French-German dictionary; it means 'hobbyhorse' in French.",
+                color: "from-slate-900/50 to-zinc-900/50",
+                badgeColor: "bg-slate-400/20 text-slate-300 border-slate-400/30",
+                icon: "fa-question"
+            },
+            {
+                id: "surrealism",
+                name: "Surrealism",
+                period: "c. 1924 – 1966",
+                century: "20th Century",
+                tagline: "Unlocking the subconscious mind, dreamscapes, and irrational juxtapositions.",
+                description: "Influenced by Sigmund Freud's psychoanalytic theories, Surrealism aimed to bridge dreams and reality. Artists painted bizarre, dreamlike imagery with meticulous detail or used automatic drawing techniques to access the uninhibited subconscious.",
+                characteristics: [
+                    "Dreamlike, irrational, and bizarre scenes",
+                    "Unexpected combinations of unrelated objects",
+                    "Hyper-realistic rendering of dream states",
+                    "Automatism (spontaneous creation without conscious control)",
+                    "Symbolic and psychological imagery"
+                ],
+                artist: "Salvador Dalí",
+                artwork: "The Persistence of Memory (1931)",
+                artworkDescription: "Features melting pocket watches draped over a deserted, surreal landscape in Catalonia.",
+                interestingFact: "Dalí used a method of falling asleep holding a key over a metal plate to wake up the instant he dropped it, capturing vivid dream visions.",
+                color: "from-indigo-950/30 to-violet-950/30",
+                badgeColor: "bg-indigo-500/20 text-indigo-300 border-indigo-500/30",
+                icon: "fa-cloud-moon"
+            },
+            {
+                id: "constructivism",
+                name: "Constructivism",
+                period: "c. 1915 – 1930s",
+                century: "Early-to-Mid 20th Century",
+                tagline: "Art as a tool for social purpose, industrial design, and geometric construction.",
+                description: "Originating in Russia after the 1917 Revolution, Constructivism rejected autonomous art for art's sake. Instead, artists acted as 'constructors' using geometric abstraction, industrial materials (metal, glass), and graphic design to serve society.",
+                characteristics: [
+                    "Geometric abstraction and industrial aesthetics",
+                    "Use of industrial materials (steel, glass, wood)",
+                    "Bold red, black, and white graphic color palettes",
+                    "Integration of typography and photomontage",
+                    "Focus on utility, architecture, and propaganda"
+                ],
+                artist: "El Lissitzky",
+                artwork: "Beat the Whites with the Red Wedge (1919)",
+                artworkDescription: "A famous revolutionary propaganda poster using sharp geometric shapes as political symbols.",
+                interestingFact: "Constructivists believed traditional painting was dead and that artists should work directly as industrial designers or architects.",
+                color: "from-red-950/40 to-slate-900/40",
+                badgeColor: "bg-red-600/20 text-red-400 border-red-600/30",
+                icon: "fa-compass-drafting"
+            },
+            {
+                id: "abstract-expressionism",
+                name: "Abstract Expressionism",
+                period: "c. 1940s – 1950s",
+                century: "Mid 20th Century",
+                tagline: "Spontaneous gesture, monumental scale, action painting, and pure emotional color fields.",
+                description: "Developed in post-WWII New York City, this movement shifted the art capital of the world from Paris to New York. Artists emphasized raw emotional expression through monumental canvases, spontaneous dripping, kinetic gestures, or vast fields of spiritual color.",
+                characteristics: [
+                    "Action painting (gestural dripping and splashing)",
+                    "Color field painting (large serene expanses of pigment)",
+                    "Non-representational, completely abstract forms",
+                    "Monumental scale canvases",
+                    "Emphasis on physical process and spontaneous action"
+                ],
+                artist: "Jackson Pollock",
+                artwork: "Number 1A, 1948 (1948)",
+                artworkDescription: "Created by dripping, slinging, and pouring paint onto a canvas laid flat on the studio floor.",
+                interestingFact: "Pollock earned the nickname 'Jack the Dripper' due to his revolutionary technique of painting with sticks and house paint from above.",
+                color: "from-amber-950/30 to-orange-950/30",
+                badgeColor: "bg-amber-500/20 text-amber-300 border-amber-500/30",
+                icon: "fa-spray-can"
+            },
+            {
+                id: "pop-art",
+                name: "Pop Art",
+                period: "c. 1950s – 1970s",
+                century: "Mid 20th Century",
+                tagline: "Embracing mass media, commercial culture, advertising, and popular icons.",
+                description: "Emerging in Britain and America, Pop Art blurred the boundaries between 'high' fine art and 'low' commercial culture. Artists incorporated imagery from comic books, celebrity culture, advertisements, mass production, and everyday consumer items.",
+                characteristics: [
+                    "Use of mass media, consumer goods, and celebrities",
+                    "Bright, bold commercial colors and screen printing",
+                    "Comic strip Ben-Day dots and collage techniques",
+                    "Irony, repetition, and detachment",
+                    "Elevating everyday commercial objects into fine art"
+                ],
+                artist: "Andy Warhol",
+                artwork: "Campbell's Soup Cans (1962)",
+                artworkDescription: "Thirty-two silkscreened canvases depicting every variety of soup sold by the company at the time.",
+                interestingFact: "Warhol called his famous art studio 'The Factory', highlighting his philosophy that art could be mass-produced like factory goods.",
+                color: "from-rose-950/30 to-yellow-950/30",
+                badgeColor: "bg-rose-500/20 text-rose-300 border-rose-500/30",
+                icon: "fa-dumpster-fire"
+            },
+            {
+                id: "op-art",
+                name: "Op Art (Optical Art)",
+                period: "c. 1960s – Present",
+                century: "Late 20th Century",
+                tagline: "Optical illusions, geometric patterns, and kinetic visual trickery.",
+                description: "Short for Optical Art, Op Art uses abstract geometric patterns, precise color relationships, and mathematical repetition to create visual illusions of movement, vibration, pulsing, or hidden three-dimensional depth on a flat surface.",
+                characteristics: [
+                    "Mathematical geometric patterns and lines",
+                    "Optical illusions of movement and pulsation",
+                    "High contrast black-and-white or complementary colors",
+                    "Precision painting techniques",
+                    "Viewer interaction as perception shifts"
+                ],
+                artist: "Victor Vasarely",
+                artwork: "Vega-Nor (1969)",
+                artworkDescription: "A mesmerizing grid painting that visually bulges outward as if expanding toward the viewer in 3D space.",
+                interestingFact: "Op Art became a major phenomenon in 1960s fashion and interior design, appearing on dresses, wallpaper, and album covers worldwide.",
+                color: "from-violet-950/30 to-slate-900/30",
+                badgeColor: "bg-violet-500/20 text-violet-300 border-violet-500/30",
+                icon: "fa-eye"
+            }
+        ];
+
+        let currentView = 'timeline';
+
+        // Render Quick Nav Links
+        function renderQuickNav() {
+            const container = document.getElementById('quickNavLinks');
+            container.innerHTML = artMovements.map(m => `
+                <a href="#${m.id}" class="px-3 py-1 bg-slate-800/80 hover:bg-gold-500/20 hover:text-gold-300 border border-slate-700/60 rounded-full transition-all text-[11px] font-medium text-slate-300 flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-gold-500"></span>
+                    ${m.name}
+                </a>
+            `).join('');
+        }
+
+        // Render Timeline View Cards
+        function renderTimeline(movements = artMovements) {
+            const container = document.getElementById('timelineView');
+            if(movements.length === 0) {
+                container.innerHTML = '';
+                document.getElementById('noResults').classList.remove('hidden');
+                return;
+            }
+            document.getElementById('noResults').classList.add('hidden');
+
+            container.innerHTML = movements.map((m, index) => {
+                const isEven = index % 2 === 0;
+                return `
+                <div id="${m.id}" class="relative flex flex-col md:flex-row items-center group transition-all duration-300">
+                    
+                    <!-- Connector Dot -->
+                    <div class="absolute left-7 md:left-1/2 -translate-x-1/2 top-6 w-8 h-8 rounded-full bg-slate-900 border-2 border-gold-500 flex items-center justify-center z-10 shadow-lg shadow-gold-500/20 group-hover:scale-125 transition-transform duration-300">
+                        <i class="fa-solid ${m.icon} text-gold-400 text-xs"></i>
+                    </div>
+
+                    <!-- Content Card Outer -->
+                    <div class="w-full pl-16 md:pl-0 md:w-1/2 ${isEven ? 'md:pr-12 md:text-right' : 'md:pl-12 md:ml-auto'}">
+                        
+                        <!-- Card Box -->
+                        <div class="bg-gradient-to-br ${m.color} bg-slate-900/90 border border-slate-800 hover:border-gold-500/50 rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:shadow-gold-500/5 transition-all duration-300 backdrop-blur-sm">
+                            
+                            <!-- Period Header -->
+                            <div class="flex items-center gap-2 mb-2 ${isEven ? 'md:justify-end' : 'justify-start'} flex-wrap">
+                                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold border ${m.badgeColor}">
+                                    ${m.period}
+                                </span>
+                                <span class="text-xs text-slate-400 font-mono">${m.century}</span>
+                            </div>
+
+                            <!-- Title -->
+                            <h2 class="font-serif text-2xl font-bold text-white mb-2 group-hover:text-gold-400 transition-colors">
+                                ${m.name}
+                            </h2>
+
+                            <!-- Tagline -->
+                            <p class="text-sm font-medium text-slate-300 mb-3 italic">
+                                "${m.tagline}"
+                            </p>
+
+                            <!-- Brief Description -->
+                            <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                                ${m.description}
+                            </p>
+
+                            <!-- Key Highlights -->
+                            <div class="space-y-2 text-left bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80 mb-4 text-xs">
+                                <div>
+                                    <span class="text-gold-400 font-semibold"><i class="fa-solid fa-user-ninja mr-1"></i> Key Artist:</span>
+                                    <span class="text-slate-200 font-medium">${m.artist}</span>
+                                </div>
+                                <div>
+                                    <span class="text-gold-400 font-semibold"><i class="fa-solid fa-palette mr-1"></i> Famous Work:</span>
+                                    <span class="text-slate-200">${m.artwork}</span>
+                                </div>
+                            </div>
+
+                            <!-- Read More Button -->
+                            <div class="pt-2 flex ${isEven ? 'md:justify-end' : 'justify-start'}">
+                                <button onclick="openModal('${m.id}')" class="px-4 py-2 bg-slate-800 hover:bg-gold-500 hover:text-black border border-slate-700 text-xs font-semibold rounded-xl transition-all flex items-center gap-2 group/btn">
+                                    <span>Explore Full Details</span>
+                                    <i class="fa-solid fa-arrow-right text-[10px] group-hover/btn:translate-x-1 transition-transform"></i>
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        // Render Grid View Cards
+        function renderGrid(movements = artMovements) {
+            const container = document.getElementById('gridView');
+            if(movements.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+
+            container.innerHTML = movements.map(m => `
+                <div class="bg-gradient-to-br ${m.color} bg-slate-900 border border-slate-800 hover:border-gold-500/50 rounded-2xl p-6 shadow-xl flex flex-col justify-between transition-all duration-300">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold border ${m.badgeColor}">
+                                ${m.period}
+                            </span>
+                            <i class="fa-solid ${m.icon} text-slate-500 text-lg"></i>
+                        </div>
+                        <h3 class="font-serif text-xl font-bold text-white mb-2">${m.name}</h3>
+                        <p class="text-xs text-slate-300 italic mb-3">"${m.tagline}"</p>
+                        <p class="text-xs text-slate-400 line-clamp-3 mb-4">${m.description}</p>
+                    </div>
+                    <div>
+                        <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800 text-xs mb-4 space-y-1">
+                            <p class="text-slate-300"><strong class="text-gold-400">Artist:</strong> ${m.artist}</p>
+                            <p class="text-slate-300"><strong class="text-gold-400">Artwork:</strong> ${m.artwork}</p>
+                        </div>
+                        <button onclick="openModal('${m.id}')" class="w-full py-2 bg-slate-800 hover:bg-gold-500 hover:text-black border border-slate-700 text-xs font-semibold rounded-xl transition-all text-center">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Search Filter Logic
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const filtered = artMovements.filter(m => 
+                m.name.toLowerCase().includes(query) ||
+                m.artist.toLowerCase().includes(query) ||
+                m.artwork.toLowerCase().includes(query) ||
+                m.description.toLowerCase().includes(query) ||
+                m.characteristics.some(c => c.toLowerCase().includes(query))
+            );
+            renderTimeline(filtered);
+            renderGrid(filtered);
+        });
+
+        // Toggle View Mode (Timeline vs Grid)
+        function toggleViewMode() {
+            const timelineView = document.getElementById('timelineView');
+            const gridView = document.getElementById('gridView');
+            const modeText = document.getElementById('viewModeText');
+            const viewBtn = document.getElementById('viewToggleBtn');
+
+            if (currentView === 'timeline') {
+                currentView = 'grid';
+                timelineView.classList.add('hidden');
+                gridView.classList.remove('hidden');
+                modeText.innerText = 'Timeline View';
+                viewBtn.querySelector('i').className = 'fa-solid fa-timeline';
+            } else {
+                currentView = 'timeline';
+                gridView.classList.add('hidden');
+                timelineView.classList.remove('hidden');
+                modeText.innerText = 'Grid View';
+                viewBtn.querySelector('i').className = 'fa-solid fa-table-cells';
+            }
+        }
+
+        // Open Detail Modal
+        function openModal(movementId) {
+            const m = artMovements.find(item => item.id === movementId);
+            if (!m) return;
+
+            const modalContent = document.getElementById('modalContent');
+            modalContent.innerHTML = `
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3">
+                        <span class="w-10 h-10 rounded-xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400">
+                            <i class="fa-solid ${m.icon} text-lg"></i>
+                        </span>
+                        <div>
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold border ${m.badgeColor}">
+                                ${m.period} (${m.century})
+                            </span>
+                            <h2 class="font-serif text-2xl sm:text-3xl font-extrabold text-white mt-1">${m.name}</h2>
+                        </div>
+                    </div>
+
+                    <p class="text-sm text-gold-300 font-medium italic border-l-2 border-gold-500 pl-3">
+                        "${m.tagline}"
+                    </p>
+
+                    <div class="space-y-2">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Overview & Development</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">${m.description}</p>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Key Characteristics & Features</h4>
+                        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            ${m.characteristics.map(c => `
+                                <li class="flex items-start gap-2 bg-slate-950/50 p-2.5 rounded-lg border border-slate-800 text-xs text-slate-300">
+                                    <i class="fa-solid fa-check text-gold-400 mt-0.5"></i>
+                                    <span>${c}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+                            <div class="flex items-center gap-2 text-gold-400 font-semibold text-xs mb-1">
+                                <i class="fa-solid fa-user-astronaut"></i> Famous Artist
+                            </div>
+                            <p class="text-sm font-bold text-white">${m.artist}</p>
+                        </div>
+                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+                            <div class="flex items-center gap-2 text-gold-400 font-semibold text-xs mb-1">
+                                <i class="fa-solid fa-image"></i> Representative Artwork
+                            </div>
+                            <p class="text-sm font-bold text-white">${m.artwork}</p>
+                            <p class="text-xs text-slate-400 mt-1">${m.artworkDescription}</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4">
+                        <div class="flex items-center gap-2 text-amber-400 font-bold text-xs uppercase tracking-wider mb-1">
+                            <i class="fa-solid fa-lightbulb"></i> Interesting Fact
+                        </div>
+                        <p class="text-xs sm:text-sm text-amber-200/90 leading-relaxed">${m.interestingFact}</p>
+                    </div>
+                </div>
+            `;
+
+            const modal = document.getElementById('artModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.firstElementChild.classList.remove('scale-95');
+                modal.firstElementChild.classList.add('scale-100');
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close Detail Modal
+        function closeModal() {
+            const modal = document.getElementById('artModal');
+            modal.firstElementChild.classList.remove('scale-100');
+            modal.firstElementChild.classList.add('scale-95');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }, 300);
+        }
+
+        // Close modal on escape key or outside click
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+        document.getElementById('artModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('artModal')) closeModal();
+        });
+
+        // Initial Initialization
+        window.onload = function() {
+            renderQuickNav();
+            renderTimeline();
+            renderGrid();
+        };
+    </script>
+</body>
+</html>
